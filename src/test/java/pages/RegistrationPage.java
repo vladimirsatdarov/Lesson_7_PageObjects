@@ -2,7 +2,9 @@ package pages;
 
 import com.codeborne.selenide.SelenideElement;
 import pages.components.CalendarComponent;
+import pages.components.DropDownComponent;
 
+import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
@@ -14,9 +16,18 @@ public class RegistrationPage {
             userEmailInput = $("#userEmail"),
             genderWrapper = $("#genterWrapper"),
             userNumberInput = $("#userNumber"),
-            calendarInput = $("#dateOfBirthInput");
+            calendarInput = $("#dateOfBirthInput"),
+            subjectsInput = $("#subjectsInput"),
+            hobbiesWrapper = $("#hobbiesWrapper"),
+            uploadPicture = $("#uploadPicture"),
+            currentAddress = $("#currentAddress"),
+//            stateCityInput = $("#stateCity-wrapper"),
+            submitButton = $("#submit"),
+            modalDialog = $(".modal-dialog"),
+            modalTitle = $("#example-modal-sizes-title-lg");
 
     CalendarComponent calendarComponent = new CalendarComponent();
+    DropDownComponent dropDownComponent = new DropDownComponent();
 
     public RegistrationPage openPage() {
         open("/automation-practice-form");
@@ -52,7 +63,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage setUserNumber(String value) {
-        userNumberInput.setValue(value);
+        userNumberInput.setValue(value).pressEnter();
 
         return this;
     }
@@ -64,10 +75,60 @@ public class RegistrationPage {
         return this;
     }
 
+    public RegistrationPage setSubjects(String value) {
+        subjectsInput.setValue(value);
+
+        return this;
+    }
+
+    public RegistrationPage setHobbies(String value) {
+        hobbiesWrapper.$(byText(value)).click();
+
+        return this;
+    }
+
+    public RegistrationPage uploadPicture(String value) {
+        uploadPicture.uploadFromClasspath(value);
+
+        return this;
+    }
+
+    public RegistrationPage setCurrentAddress(String value) {
+        currentAddress.setValue(value);
+
+        return this;
+    }
+
+    public RegistrationPage setStateAndCity(String state, String city) {
+        dropDownComponent.setDropDown("#state", state);
+        dropDownComponent.setDropDown("#city", city);
+
+        return this;
+    }
+
+    public RegistrationPage clickSubmit() {
+        submitButton.click();
+
+        return this;
+    }
+
+    public RegistrationPage modalDialog (String value) {
+        modalDialog.should(appear);
+        modalTitle.shouldHave(text(value));
+
+        return this;
+    }
     public RegistrationPage checkResult(String key, String value) {
         $(".table-responsive").$(byText(key)).parent()
                 .shouldHave(text(value));
 
         return this;
     }
+
+    public RegistrationPage closeModalPopUp() {
+        $("#closeLargeModal").click();
+
+        return this;
+    }
+
 }
