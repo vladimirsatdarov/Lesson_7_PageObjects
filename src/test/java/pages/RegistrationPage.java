@@ -63,7 +63,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage setUserNumber(String value) {
-        userNumberInput.setValue(value).pressEnter();
+        userNumberInput.setValue(value);
 
         return this;
     }
@@ -76,7 +76,7 @@ public class RegistrationPage {
     }
 
     public RegistrationPage setSubjects(String value) {
-        subjectsInput.setValue(value);
+        subjectsInput.setValue(value).pressEnter();
 
         return this;
     }
@@ -115,6 +115,11 @@ public class RegistrationPage {
     public RegistrationPage modalDialog (String value) {
         modalDialog.should(appear);
         modalTitle.shouldHave(text(value));
+
+        return this;
+    }
+    public RegistrationPage noModalDialog () {
+        modalDialog.shouldNot(appear);
 
         return this;
     }
